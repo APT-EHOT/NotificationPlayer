@@ -7,6 +7,6 @@ import android.widget.Toast
 
 class LoopActionBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "TEST", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "LOOP", Toast.LENGTH_SHORT).show()
     }
 }

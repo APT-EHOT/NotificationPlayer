@@ -8,8 +8,9 @@ import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.graphics.drawable.IconCompat
 import com.artemiymatchin.notificationplayer.actions.LoopActionBroadcastReceiver
+import com.artemiymatchin.notificationplayer.actions.PauseActionBroadcastReceiver
+import com.artemiymatchin.notificationplayer.actions.RandomActionBroadcastReceiver
 
 class NotificationPlayerService : Service() {
 
@@ -52,19 +53,18 @@ class NotificationPlayerService : Service() {
                 ""
             }
 
-
         val loopAction = createAction(
             LoopActionBroadcastReceiver::class.java,
             R.drawable.repeat_icon,
             getString(R.string.loop_action)
         )
         val pauseAction = createAction(
-            LoopActionBroadcastReceiver::class.java,
+            PauseActionBroadcastReceiver::class.java,
             R.drawable.pause_icon,
             getString(R.string.pause_action)
         )
         val randomAction = createAction(
-            LoopActionBroadcastReceiver::class.java,
+            RandomActionBroadcastReceiver::class.java,
             R.drawable.random_icon,
             getString(R.string.random_action)
         )
