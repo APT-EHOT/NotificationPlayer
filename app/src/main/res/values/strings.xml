@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NotificationPlayer</string>
+    <string name="notification_header">Notification player</string>
+    <string name="loop_action">Loop</string>
+    <string name="pause_action">Pause</string>
+    <string name="random_action">Random</string>
 </resources>

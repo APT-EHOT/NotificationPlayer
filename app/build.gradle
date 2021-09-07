@@ -44,4 +44,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.5.30"
+
+    implementation "androidx.media:media:1.4.1"
 }
