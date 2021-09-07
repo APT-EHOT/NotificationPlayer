@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <receiver android:name=".actions.LoopActionBroadcastReceiver"/>
+        <receiver android:name=".actions.PauseActionBroadcastReceiver"/>
+        <receiver android:name=".actions.RandomActionBroadcastReceiver"/>
     </application>
 
 </manifest>
