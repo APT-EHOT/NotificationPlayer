@@ -9,6 +9,6 @@ import com.artemiymatchin.notificationplayer.MusicPlayer
 class PauseActionBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context != null)
-            MusicPlayer.playPauseTrack(context)
+            MusicPlayer.playPauseTrack()
     }
 }

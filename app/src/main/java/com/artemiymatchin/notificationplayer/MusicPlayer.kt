@@ -20,7 +20,7 @@ object MusicPlayer {
     private var trackList = ArrayList<String>()
 
 
-    private fun findTracks() {
+    private fun refreshTrackList() {
         trackList.clear()
         val directory = File(musicFolder)
         val fList = directory.listFiles() ?: return
@@ -34,7 +34,7 @@ object MusicPlayer {
 
 
     private fun setNextTrack() {
-        findTracks()
+        refreshTrackList()
         val currentTrackIndex = trackList.indexOf(currentTrackName)
 
         currentTrackName = if (currentTrackIndex == trackList.size - 1)
@@ -54,7 +54,7 @@ object MusicPlayer {
             )
         }
 
-        findTracks()
+        refreshTrackList()
         if (trackList.size == 0) {
             Toast.makeText(
                 context,
@@ -82,23 +82,19 @@ object MusicPlayer {
     }
 
 
-    fun playPauseTrack(context: Context) {
+    fun playPauseTrack() {
         if (isPaused) {
             isPaused = false
-            mediaPlayer.apply {
-                start()
-            }
+            mediaPlayer.apply { start() }
         } else {
             isPaused = true
-            mediaPlayer.apply {
-                pause()
-            }
+            mediaPlayer.apply { pause() }
         }
     }
 
 
     fun playRandomTrack(context: Context) {
-        findTracks()
+        refreshTrackList()
         val randomTrackID = Random.nextInt(trackList.size)
         currentTrackName = trackList[randomTrackID]
 
