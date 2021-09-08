@@ -4,13 +4,14 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
+import android.widget.Toast
 import java.io.File
 
 object MusicPlayer {
 
     private lateinit var mediaPlayer: MediaPlayer
     private var isLooped = false
-    private var isPaused = false
+    private var isPaused = true
 
     private var musicFolder = "/storage/emulated/0/NotificationPlayer"
 
@@ -41,19 +42,34 @@ object MusicPlayer {
         }
 
         findTracks()
-        if (trackList.size == 0)
-            return // TODO: Add message about no tracks found
+        if (trackList.size == 0) {
+            Toast.makeText(
+                context,
+                context.getString(R.string.no_tracks_msg),
+                Toast.LENGTH_LONG
+            ).show()
+            return
+        }
 
         mediaPlayer.apply {
             setDataSource(context, Uri.parse(musicFolder + "/" + trackList[0]))
             prepare()
-            start()
         }
     }
 
 
     fun playPauseTrack(context: Context) {
-
+        if (isPaused) {
+            isPaused = false
+            mediaPlayer.apply {
+                start()
+            }
+        } else {
+            isPaused = true
+            mediaPlayer.apply {
+                pause()
+            }
+        }
     }
 
 }
