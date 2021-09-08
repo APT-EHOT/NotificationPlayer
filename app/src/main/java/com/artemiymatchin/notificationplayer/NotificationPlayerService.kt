@@ -84,7 +84,7 @@ class NotificationPlayerService : Service() {
             )
             .build()
 
-        MusicPlayer.startPlayer()
+        MusicPlayer.startPlayer(application)
 
         startForeground(1, notification)
     }
