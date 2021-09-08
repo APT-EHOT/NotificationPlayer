@@ -14,6 +14,7 @@ object MusicPlayer {
     private var isPaused = true
 
     private var musicFolder = "/storage/emulated/0/NotificationPlayer"
+    private lateinit var currentTrackName: String
 
     private var trackList = ArrayList<String>()
 
@@ -28,6 +29,16 @@ object MusicPlayer {
                 trackList.add(file.name)
             }
         }
+    }
+
+    private fun setNextTrack() {
+        findTracks()
+        val currentTrackIndex = trackList.indexOf(currentTrackName)
+
+        currentTrackName = if (currentTrackIndex == trackList.size - 1)
+            trackList[0]
+        else
+            trackList[currentTrackIndex + 1]
     }
 
 
@@ -51,9 +62,20 @@ object MusicPlayer {
             return
         }
 
+        currentTrackName = trackList[0]
+
         mediaPlayer.apply {
-            setDataSource(context, Uri.parse(musicFolder + "/" + trackList[0]))
+            setDataSource(context, Uri.parse("$musicFolder/$currentTrackName"))
             prepare()
+            setOnCompletionListener {
+                if (!isLooping) {
+                    setNextTrack()
+                }
+                reset()
+                setDataSource(context, Uri.parse("$musicFolder/$currentTrackName"))
+                prepare()
+                start()
+            }
         }
     }
 
