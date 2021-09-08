@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.widget.Toast
 import java.io.File
+import kotlin.random.Random
 
 object MusicPlayer {
 
@@ -30,6 +31,7 @@ object MusicPlayer {
             }
         }
     }
+
 
     private fun setNextTrack() {
         findTracks()
@@ -92,6 +94,26 @@ object MusicPlayer {
                 pause()
             }
         }
+    }
+
+
+    fun playRandomTrack(context: Context) {
+        findTracks()
+        val randomTrackID = Random.nextInt(trackList.size)
+        currentTrackName = trackList[randomTrackID]
+
+        isPaused = false
+        mediaPlayer.apply {
+            reset()
+            setDataSource(context, Uri.parse("$musicFolder/$currentTrackName"))
+            prepare()
+            start()
+        }
+    }
+
+
+    fun loopTrack() {
+        mediaPlayer.isLooping = !mediaPlayer.isLooping
     }
 
 }

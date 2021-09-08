@@ -3,10 +3,11 @@ package com.artemiymatchin.notificationplayer.actions
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
+import com.artemiymatchin.notificationplayer.MusicPlayer
 
 class LoopActionBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Toast.makeText(context, "LOOP", Toast.LENGTH_SHORT).show()
+        if (context != null)
+            MusicPlayer.loopTrack(context)
     }
 }
