@@ -8,6 +8,8 @@ import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.artemiymatchin.notificationplayer.actions.LoopActionBroadcastReceiver
 import com.artemiymatchin.notificationplayer.actions.PauseActionBroadcastReceiver
 import com.artemiymatchin.notificationplayer.actions.RandomActionBroadcastReceiver

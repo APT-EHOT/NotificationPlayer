@@ -15,10 +15,9 @@ object MusicPlayer {
     private var isPaused = true
 
     private var musicFolder = "/storage/emulated/0/NotificationPlayer"
-    private lateinit var currentTrackName: String
+    public lateinit var currentTrackName: String
 
     private var trackList = ArrayList<String>()
-
 
     private fun refreshTrackList() {
         trackList.clear()

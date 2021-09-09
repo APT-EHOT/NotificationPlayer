@@ -8,6 +8,6 @@ import com.artemiymatchin.notificationplayer.MusicPlayer
 class LoopActionBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         if (context != null)
-            MusicPlayer.loopTrack(context)
+            MusicPlayer.loopTrack()
     }
 }
