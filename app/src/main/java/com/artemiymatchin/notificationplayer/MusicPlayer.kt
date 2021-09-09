@@ -13,11 +13,13 @@ import kotlin.random.Random
 object MusicPlayer {
 
     private lateinit var mediaPlayer: MediaPlayer
-    public val isLooped: MutableLiveData<Boolean> by lazy {
+    val isLooped: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
-    private var isPaused = true
+    val isPaused: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
     private var musicFolder = "/storage/emulated/0/NotificationPlayer"
     private lateinit var currentTrackName: String
@@ -69,7 +71,8 @@ object MusicPlayer {
         }
 
         currentTrackName = trackList[0]
-        isLooped.value = true
+        isLooped.value = false
+        isPaused.value = true
 
         mediaPlayer.apply {
             setDataSource(context, Uri.parse("$musicFolder/$currentTrackName"))
@@ -88,11 +91,11 @@ object MusicPlayer {
 
 
     fun playPauseTrack() {
-        if (isPaused) {
-            isPaused = false
+        if (isPaused.value ?: return) {
+            isPaused.value = false
             mediaPlayer.apply { start() }
         } else {
-            isPaused = true
+            isPaused.value = true
             mediaPlayer.apply { pause() }
         }
     }
@@ -103,7 +106,7 @@ object MusicPlayer {
         val randomTrackID = Random.nextInt(trackList.size)
         currentTrackName = trackList[randomTrackID]
 
-        isPaused = false
+        isPaused.value = false
         mediaPlayer.apply {
             reset()
             setDataSource(context, Uri.parse("$musicFolder/$currentTrackName"))
@@ -115,6 +118,7 @@ object MusicPlayer {
 
     fun loopTrack() {
         mediaPlayer.isLooping = !mediaPlayer.isLooping
+        isLooped.value = mediaPlayer.isLooping
     }
 
 }
