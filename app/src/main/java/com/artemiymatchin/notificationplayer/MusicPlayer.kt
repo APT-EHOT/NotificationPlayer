@@ -5,17 +5,22 @@ import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.net.Uri
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+
 import java.io.File
 import kotlin.random.Random
 
 object MusicPlayer {
 
     private lateinit var mediaPlayer: MediaPlayer
-    private var isLooped = false
+    public val isLooped: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
     private var isPaused = true
 
     private var musicFolder = "/storage/emulated/0/NotificationPlayer"
-    public lateinit var currentTrackName: String
+    private lateinit var currentTrackName: String
 
     private var trackList = ArrayList<String>()
 
@@ -64,6 +69,7 @@ object MusicPlayer {
         }
 
         currentTrackName = trackList[0]
+        isLooped.value = true
 
         mediaPlayer.apply {
             setDataSource(context, Uri.parse("$musicFolder/$currentTrackName"))

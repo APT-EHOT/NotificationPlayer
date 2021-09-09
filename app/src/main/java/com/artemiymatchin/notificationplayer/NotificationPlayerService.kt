@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.artemiymatchin.notificationplayer.actions.LoopActionBroadcastReceiver
 import com.artemiymatchin.notificationplayer.actions.PauseActionBroadcastReceiver
@@ -65,6 +64,11 @@ class NotificationPlayerService : Service() {
             R.drawable.pause_icon,
             getString(R.string.pause_action)
         )
+        val playAction = createAction(
+            LoopActionBroadcastReceiver::class.java,
+            R.drawable.unpause_icon,
+            getString(R.string.loop_action)
+        )
         val randomAction = createAction(
             RandomActionBroadcastReceiver::class.java,
             R.drawable.random_icon,
@@ -72,7 +76,8 @@ class NotificationPlayerService : Service() {
         )
 
 
-        val notification: Notification = NotificationCompat.Builder(this, channelId)
+
+        val notification = NotificationCompat.Builder(this, channelId)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentTitle(getText(R.string.notification_header))
             .setSmallIcon(R.drawable.music_icon)
@@ -89,6 +94,17 @@ class NotificationPlayerService : Service() {
         MusicPlayer.startPlayer(application)
 
         startForeground(1, notification)
+
+//        val observer = Observer<Boolean> { isLooped ->
+//            if (isLooped == true) {
+//                notification.actions[0] =
+//            } else {
+//                notification.actions[0]
+//            }
+//
+//        }
+//
+//        MusicPlayer.isLooped.observeForever(observer)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
