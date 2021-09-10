@@ -3,11 +3,14 @@ package com.artemiymatchin.notificationplayer
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import com.artemiymatchin.notificationplayer.actions.LoopActionBroadcastReceiver
 import com.artemiymatchin.notificationplayer.actions.PauseActionBroadcastReceiver
@@ -90,7 +93,7 @@ class NotificationPlayerService : Service() {
 
         val notification = NotificationCompat.Builder(this, channelId)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentTitle("TEST")
+            .setContentTitle(track.trackName)
             .setSmallIcon(R.drawable.music_icon)
             .setAutoCancel(true)
             .addAction(loopAction)
@@ -107,6 +110,10 @@ class NotificationPlayerService : Service() {
 
 
     override fun onCreate() {
+
+        val noCoverImg = BitmapFactory.decodeResource(resources, R.drawable.nocoverimg)
+        track = Track("No track", noCoverImg)
+
         channelId =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 createNotificationChannel("main_service", "Notification player service")
@@ -126,12 +133,14 @@ class NotificationPlayerService : Service() {
             buildNotification()
         }
 
-//        val trackObserver = Observer<Track> { Track ->
-//            notification.
-//        }
+        val trackObserver = Observer<Track> {
+            track = it
+            buildNotification()
+        }
 
         MusicPlayer.isLooped.observeForever(isLoopedObserver)
         MusicPlayer.isPaused.observeForever(isPausedObserver)
+        MusicPlayer.currentTrack.observeForever(trackObserver)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
