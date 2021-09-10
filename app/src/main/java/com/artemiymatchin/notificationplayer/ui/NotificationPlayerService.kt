@@ -1,17 +1,18 @@
-package com.artemiymatchin.notificationplayer
+package com.artemiymatchin.notificationplayer.ui
 
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.IBinder
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
+import com.artemiymatchin.notificationplayer.model.MusicPlayer
+import com.artemiymatchin.notificationplayer.R
+import com.artemiymatchin.notificationplayer.data.Track
 import com.artemiymatchin.notificationplayer.actions.LoopActionBroadcastReceiver
 import com.artemiymatchin.notificationplayer.actions.PauseActionBroadcastReceiver
 import com.artemiymatchin.notificationplayer.actions.RandomActionBroadcastReceiver
@@ -37,6 +38,8 @@ class NotificationPlayerService : Service() {
         return channelId
     }
 
+
+    // Creating action for buttons in notification
     private fun createAction(
         receiverClass: Class<*>,
         icon: Int,
@@ -67,6 +70,7 @@ class NotificationPlayerService : Service() {
     }
 
 
+    // This method refreshes notification every time after changing player status
     private fun buildNotification() {
 
         val loopActionIcon = if (isLooped)
@@ -132,6 +136,7 @@ class NotificationPlayerService : Service() {
 
         MusicPlayer.startPlayer(application)
 
+        // Observers for track data and player status
         val isLoopedObserver = Observer<Boolean> {
             isLooped = it
             buildNotification()

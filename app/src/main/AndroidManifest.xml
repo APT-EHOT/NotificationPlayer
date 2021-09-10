@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotificationPlayer"
         android:requestLegacyExternalStorage="true">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".NotificationPlayerService" />
+        <service android:name=".ui.NotificationPlayerService" />
 
         <receiver android:name=".actions.LoopActionBroadcastReceiver"/>
         <receiver android:name=".actions.PauseActionBroadcastReceiver"/>

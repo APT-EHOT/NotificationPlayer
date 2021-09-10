@@ -1,4 +1,4 @@
-package com.artemiymatchin.notificationplayer
+package com.artemiymatchin.notificationplayer.data
 
 import android.graphics.Bitmap
 

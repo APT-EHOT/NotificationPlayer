@@ -1,4 +1,4 @@
-package com.artemiymatchin.notificationplayer
+package com.artemiymatchin.notificationplayer.model
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,6 +9,8 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.artemiymatchin.notificationplayer.R
+import com.artemiymatchin.notificationplayer.data.Track
 import java.io.File
 import kotlin.random.Random
 
@@ -32,17 +34,20 @@ object MusicPlayer {
 
     private var trackList = ArrayList<String>()
 
+
+    // refreshing track list every time when player status is changing
     private fun refreshTrackList() {
         trackList.clear()
         val directory = File(musicFolder)
         val fList = directory.listFiles() ?: return
 
         for (file in fList) {
-            if (file.isFile && file.name.endsWith(".m4a")) { // TODO: Change to mp3 after testing
+            if (file.isFile && file.name.endsWith(".mp3")) {
                 trackList.add(file.name)
             }
         }
     }
+
 
     private fun getTrackCover(trackName: String) : Bitmap? {
         val mmr = MediaMetadataRetriever()

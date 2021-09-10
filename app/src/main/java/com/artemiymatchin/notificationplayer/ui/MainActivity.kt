@@ -1,4 +1,4 @@
-package com.artemiymatchin.notificationplayer
+package com.artemiymatchin.notificationplayer.ui
 
 import android.Manifest
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import com.artemiymatchin.notificationplayer.R
 
 class MainActivity : AppCompatActivity() {
 
