@@ -9,5 +9,7 @@
 
 ## Ссылки и примечания
 Наиболее важные этапы разработки разбиты по разным веткам
+
 [APK](https://drive.google.com/file/d/18naGTTTKSC8VWJlvALM29RIZe2DfvC8C/view?usp=sharing)
+
 [Демовидео](https://youtu.be/4SNRNVYfPTA)
