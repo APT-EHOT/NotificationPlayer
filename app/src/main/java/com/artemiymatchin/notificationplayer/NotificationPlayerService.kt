@@ -54,10 +54,16 @@ class NotificationPlayerService : Service() {
         ).build()
     }
 
-    @Deprecated("Old")
-    private fun makePendingIntent(receiverClass: Class<*>): PendingIntent {
-        val broadcastIntent = Intent(application, receiverClass)
-        return PendingIntent.getBroadcast(application, 0, broadcastIntent, 0)
+
+    private fun prepareTrackDataToShow() : Track {
+        val preparedTrackName = track.trackName.substring(
+            0,
+            track.trackName.length - 4
+        ) // cutting off .mp3 from track name
+        val preparedTrackCover =
+            track.trackCover ?: BitmapFactory.decodeResource(resources, R.drawable.nocoverimg)
+
+        return Track(preparedTrackName, preparedTrackCover)
     }
 
 
@@ -91,9 +97,12 @@ class NotificationPlayerService : Service() {
             getString(R.string.random_action)
         )
 
+        val preparedTrackData = prepareTrackDataToShow()
+
         val notification = NotificationCompat.Builder(this, channelId)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setContentTitle(track.trackName)
+            .setContentTitle(preparedTrackData.trackName)
+            .setLargeIcon(preparedTrackData.trackCover)
             .setSmallIcon(R.drawable.music_icon)
             .setAutoCancel(true)
             .addAction(loopAction)

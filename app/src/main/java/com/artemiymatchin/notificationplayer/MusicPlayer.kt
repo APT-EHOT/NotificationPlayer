@@ -29,7 +29,6 @@ object MusicPlayer {
     }
 
     private var musicFolder = "/storage/emulated/0/NotificationPlayer"
-    private lateinit var currentTrackName: String
 
     private var trackList = ArrayList<String>()
 
@@ -39,7 +38,7 @@ object MusicPlayer {
         val fList = directory.listFiles() ?: return
 
         for (file in fList) {
-            if (file.isFile && file.name.endsWith(".flac")) { // TODO: Change to mp3 after testing
+            if (file.isFile && file.name.endsWith(".m4a")) { // TODO: Change to mp3 after testing
                 trackList.add(file.name)
             }
         }
@@ -48,8 +47,8 @@ object MusicPlayer {
     private fun getTrackCover(trackName: String) : Bitmap? {
         val mmr = MediaMetadataRetriever()
         mmr.setDataSource("$musicFolder/$trackName")
-        val data = mmr.embeddedPicture ?: return null// TODO: Add no-cover handling situation
-        return BitmapFactory.decodeByteArray(data, 0, data!!.size)
+        val data = mmr.embeddedPicture ?: return null
+        return BitmapFactory.decodeByteArray(data, 0, data.size)
     }
 
 
