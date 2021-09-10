@@ -2,7 +2,7 @@
     <string name="app_name">NotificationPlayer</string>
     <string name="notification_header">Notification player</string>
     <string name="loop_action">Loop</string>
-    <string name="pause_action">Pause</string>
+    <string name="pause_action">Pause/Unpause</string>
     <string name="random_action">Random</string>
     <string name="ungiven_permission_msg">Player can\'t work without memory access permission!</string>
     <string name="no_tracks_msg">No .mp3 tracks found!</string>

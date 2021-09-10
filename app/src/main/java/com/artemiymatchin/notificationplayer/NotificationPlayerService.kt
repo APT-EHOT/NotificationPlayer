@@ -15,6 +15,12 @@ import com.artemiymatchin.notificationplayer.actions.RandomActionBroadcastReceiv
 
 class NotificationPlayerService : Service() {
 
+    private var isPaused = false
+    private var isLooped = false
+    private lateinit var track: Track
+
+    private lateinit var channelId: String
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelId: String, channelName: String): String {
         val chan = NotificationChannel(
@@ -45,66 +51,50 @@ class NotificationPlayerService : Service() {
         ).build()
     }
 
+    @Deprecated("Old")
     private fun makePendingIntent(receiverClass: Class<*>): PendingIntent {
         val broadcastIntent = Intent(application, receiverClass)
         return PendingIntent.getBroadcast(application, 0, broadcastIntent, 0)
     }
 
-    override fun onCreate() {
 
-        val channelId =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel("main_service", "Notification player service")
-            } else {
-                ""
-            }
+    private fun buildNotification() {
 
-        val loopActionPendingIntent =
-            makePendingIntent(LoopActionBroadcastReceiver::class.java)
-        val pauseActionPendingIntent =
-            makePendingIntent(PauseActionBroadcastReceiver::class.java)
-        val randomActionBroadcastReceiver =
-            makePendingIntent(RandomActionBroadcastReceiver::class.java)
+        val loopActionIcon = if (isLooped)
+            R.drawable.unrepeat_icon
+        else
+            R.drawable.repeat_icon
 
         val loopAction = createAction(
             LoopActionBroadcastReceiver::class.java,
-            R.drawable.repeat_icon,
+            loopActionIcon,
             getString(R.string.loop_action)
         )
+
+        val pauseActionIcon = if (isPaused)
+            R.drawable.unpause_icon
+        else
+            R.drawable.pause_icon
+
         val pauseAction = createAction(
             PauseActionBroadcastReceiver::class.java,
-            R.drawable.pause_icon,
+            pauseActionIcon,
             getString(R.string.pause_action)
         )
-        val playAction = createAction(
-            LoopActionBroadcastReceiver::class.java,
-            R.drawable.unpause_icon,
-            getString(R.string.loop_action)
-        )
+
         val randomAction = createAction(
             RandomActionBroadcastReceiver::class.java,
             R.drawable.random_icon,
             getString(R.string.random_action)
         )
 
-
-        val broadcastIntent = Intent(application, LoopActionBroadcastReceiver::class.java)
-        val broadcastPendingIntent: PendingIntent =
-            PendingIntent.getBroadcast(application, 0, broadcastIntent, 0)
-
         val notification = NotificationCompat.Builder(this, channelId)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setContentTitle("TEST")
             .setSmallIcon(R.drawable.music_icon)
             .setAutoCancel(true)
-            .addAction(
-                R.drawable.repeat_icon,
-                getString(R.string.loop_action),
-                loopActionPendingIntent
-            )
-            .addAction(R.drawable.unpause_icon,
-                getString(R.string.pause_action),
-                pauseActionPendingIntent)
+            .addAction(loopAction)
+            .addAction(pauseAction)
             .addAction(randomAction)
             .setStyle(
                 androidx.media.app.NotificationCompat.MediaStyle()
@@ -112,35 +102,33 @@ class NotificationPlayerService : Service() {
             )
             .build()
 
+        startForeground(1, notification)
+    }
+
+
+    override fun onCreate() {
+        channelId =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                createNotificationChannel("main_service", "Notification player service")
+            } else {
+                ""
+            }
+
         MusicPlayer.startPlayer(application)
 
-        startForeground(1, notification)
-
-        val isLoopedObserver = Observer<Boolean> { isLooped ->
-            if (isLooped == true) {
-                notification.actions[0] = Notification.Action(R.drawable.unrepeat_icon,
-                    getString(R.string.loop_action),
-                    loopActionPendingIntent)
-            } else {
-                notification.actions[0] = Notification.Action(R.drawable.repeat_icon,
-                    getString(R.string.loop_action),
-                    loopActionPendingIntent)
-            }
-            startForeground(1, notification)
+        val isLoopedObserver = Observer<Boolean> {
+            isLooped = it
+            buildNotification()
         }
 
-        val isPausedObserver = Observer<Boolean> { isPaused ->
-            if (isPaused == true) {
-                notification.actions[1] = Notification.Action(R.drawable.unpause_icon,
-                    getString(R.string.loop_action),
-                    pauseActionPendingIntent)
-            } else {
-                notification.actions[1] = Notification.Action(R.drawable.pause_icon,
-                    getString(R.string.loop_action),
-                    pauseActionPendingIntent)
-            }
-            startForeground(1, notification)
+        val isPausedObserver = Observer<Boolean> {
+            isPaused = it
+            buildNotification()
         }
+
+//        val trackObserver = Observer<Track> { Track ->
+//            notification.
+//        }
 
         MusicPlayer.isLooped.observeForever(isLoopedObserver)
         MusicPlayer.isPaused.observeForever(isPausedObserver)
